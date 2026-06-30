@@ -1,3 +1,6 @@
+  <p align="center">
+    <a href="README_CN.md">中文文档</a> | <a href="README.md">English</a>
+  </p>
 # AI LaTeX Editor — Smart LaTeX Editor
 
 An AI-powered online LaTeX editor featuring multi-model chat, one-click material import for automatic paper generation, and real-time PDF preview. Frontend: React 18 + TypeScript. Backend: FastAPI + PostgreSQL.
