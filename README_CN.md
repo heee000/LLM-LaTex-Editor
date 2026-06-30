@@ -102,33 +102,43 @@ cd frontend
 npm install
 ```
 
-### 2. 启动 PostgreSQL 数据库（必须先做！）
-
-用 Docker 一行启动：
+### 2. 配置环境变量
 
 ```bash
-# 在项目根目录（NEW/）
+# ⚠️ 首次使用必须执行：复制配置模板
+cd backend
+cp .env.example .env
+```
+
+> `.env` 文件包含数据库连接信息。如果你使用自建的 PostgreSQL，打开 `.env` 修改连接地址。
+> 默认配置直接适用于 Docker 方式启动的数据库，无需额外修改。
+
+### 3. 启动 PostgreSQL 数据库（必须先做！）
+
+```bash
+# 在项目根目录
 docker compose up -d db
 ```
 
-验证是否启动成功：
+验证：
 ```bash
 docker ps --filter "name=db" --format "{{.Status}}"
 # 应该显示：Up X seconds
 ```
 
-> **Windows 注意**：Windows 常会保留 5432 端口，docker-compose.yml 已将主机端口改为 15432。`backend/.env` 文件已预先配置好正确的连接地址，无需手动创建。
+> Windows 的 5432/5433 端口常被系统保留，docker-compose 已改用 15432 端口。
 
-### 3. 初始化数据库表
+### 4. 初始化数据库表
 
 ```bash
 cd backend
-F:/python/python.exe -m alembic upgrade head
+python -m alembic upgrade head
+# Windows 用 F:/python/python.exe 代替 python
 ```
 
-> 如果报 `ModuleNotFoundError: No module named 'app'`，请确认在 `backend/` 目录下执行。
+> 报 `ModuleNotFoundError: No module named 'app'` = 不在 `backend/` 目录下，先 `cd backend`。
 
-### 4. 启动后端
+### 5. 启动后端
 
 ```bash
 # 终端 1 —— 在 backend/ 目录下
@@ -138,7 +148,7 @@ F:/python/python.exe -m uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
 
 看到 `Application startup complete.` 即启动成功。
 
-### 5. 启动前端
+### 6. 启动前端
 
 ```bash
 # 终端 2 —— 在 frontend/ 目录下
@@ -153,6 +163,7 @@ npm run dev
 | 错误信息 | 原因 | 解决方法 |
 |----------|------|----------|
 | `Connect call failed (127.0.0.1, 5432)` | PostgreSQL 没启动 | 先执行 `docker compose up -d db` |
+| `Connect call failed` 但端口是 5432 | `.env` 文件不存在或端口不对 | `cp .env.example .env`（已配置好 15432 端口） |
 | `ModuleNotFoundError: No module named 'app'` | alembic 不在 backend 目录下运行 | `cd backend` 后再执行 |
 | 端口 5432/5433 `bind: access permissions` | Windows 端口保留 | docker-compose 已改用 15432 端口 |
 | `npm run dev` 报 ENOENT | 前端依赖未安装 | `cd frontend && npm install` |

@@ -102,33 +102,42 @@ cd frontend
 npm install
 ```
 
-### 2. Start PostgreSQL (REQUIRED FIRST)
-
-The app needs PostgreSQL running before anything else. Use Docker:
+### 2. Configure Environment
 
 ```bash
-# From the project root (NEW/)
+# 复制配置模板并填写（首次使用必须执行）
+cd backend
+cp .env.example .env
+```
+
+> The `.env` file contains database connection info. Open it and edit if you're using your own PostgreSQL (default works with the Docker setup below).
+
+### 3. Start PostgreSQL (REQUIRED FIRST)
+
+```bash
+# From the project root
 docker compose up -d db
 ```
 
-Verify it's running:
+Verify:
 ```bash
 docker ps --filter "name=db" --format "{{.Status}}"
 # Should show: Up X seconds
 ```
 
-> **Windows note**: port 5432 is often reserved. docker-compose maps to host port 15432 instead. A pre-configured `.env` file at `backend/.env` already points to the correct port.
+> Windows port 5432/5433 is often reserved. docker-compose uses port 15432 instead.
 
-### 3. Initialize Database Tables
+### 4. Initialize Database Tables
 
 ```bash
 cd backend
-F:/python/python.exe -m alembic upgrade head
+python -m alembic upgrade head
+# Windows: use F:/python/python.exe instead of python
 ```
 
-> If you see `ModuleNotFoundError: No module named 'app'`, make sure you're running this from the `backend/` directory.
+> `ModuleNotFoundError: No module named 'app'` = not in `backend/` directory. `cd backend` first.
 
-### 4. Start the Backend
+### 5. Start the Backend
 
 ```bash
 # Terminal 1 — from backend/
@@ -136,7 +145,7 @@ cd backend
 F:/python/python.exe -m uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
 ```
 
-### 5. Start the Frontend
+### 6. Start the Frontend
 
 ```bash
 # Terminal 2 — from frontend/
@@ -159,7 +168,8 @@ docker compose up -d
 | Symptom | Fix |
 |---------|-----|
 | `Connect call failed (127.0.0.1, 5432)` | PostgreSQL isn't running. Run `docker compose up -d db` first |
-| `ModuleNotFoundError: No module named 'app'` (alembic) | Run from `backend/` directory: `cd backend && F:/python/python.exe -m alembic upgrade head` |
+| `Connect call failed` with wrong port | `.env` missing or misconfigured. Run `cp .env.example .env` in `backend/` |
+| `ModuleNotFoundError: No module named 'app'` (alembic) | Run from `backend/` directory: `cd backend && python -m alembic upgrade head` |
 | Port 5432/5433 "bind: access permissions" | Windows reserves these ports. docker-compose already uses port 15432 |
 | `npm run dev` fails with ENOENT | Run `npm install` in the frontend directory first |
 | LaTeX compilation fails | Check that xelatex and latexmk are installed and on PATH |
