@@ -1,0 +1,44 @@
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: latex_editor
+      POSTGRES_PASSWORD: latex_editor_pass
+      POSTGRES_DB: latex_editor
+    ports:
+      - "15432:5432"  # Windows excludes 5432-5433; use high port
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  backend:
+    build:
+      context: ./backend
+    ports:
+      - "8000:8000"
+    environment:
+      DATABASE_URL: postgresql+asyncpg://latex_editor:latex_editor_pass@db:5432/latex_editor
+      SECRET_KEY: dev-secret-change-in-production
+      COMPILE_DIR: /tmp/latex_compile
+      UPLOAD_DIR: /app/uploads
+      TEMPLATE_DIR: /app/templates
+    volumes:
+      - ./backend:/app
+      - uploads:/app/uploads
+      - compile_tmp:/tmp/latex_compile
+    depends_on:
+      - db
+
+  frontend:
+    build:
+      context: ./frontend
+    ports:
+      - "3000:3000"
+    environment:
+      VITE_API_URL: http://localhost:8000/api
+    depends_on:
+      - backend
+
+volumes:
+  pgdata:
+  uploads:
+  compile_tmp:
