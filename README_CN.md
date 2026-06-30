@@ -1,3 +1,7 @@
+  <p align="center">
+    <a href="README.md">English</a> | <a href="README_CN.md">中文文档</a>
+  </p>
+
 # AI LaTeX Editor — 智能 LaTeX 编辑器
 
 基于 AI 的在线 LaTeX 编辑器，支持多模型对话、一键导入素材自动生成论文、实时 PDF 预览。前端 React 18 + TypeScript，后端 FastAPI + PostgreSQL。
