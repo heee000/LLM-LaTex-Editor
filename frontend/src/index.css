@@ -1,0 +1,49 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply antialiased text-stone-800 dark:text-stone-200 bg-surface dark:bg-surface-dark;
+    font-family: "Inter", system-ui, sans-serif;
+    font-size: 14px;
+    line-height: 1.5;
+  }
+
+  * {
+    transition-property: background-color, border-color, box-shadow, opacity, color;
+    transition-duration: 150ms;
+    transition-timing-function: ease;
+  }
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: #c4b5a5;
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #a6998a;
+}
+.dark ::-webkit-scrollbar-thumb {
+  background: #57534e;
+}
+.dark ::-webkit-scrollbar-thumb:hover {
+  background: #78716c;
+}
+
+/* Code font */
+code,
+pre,
+.cm-editor {
+  font-family: "JetBrains Mono", "Cascadia Code", monospace !important;
+}
