@@ -1,0 +1,31 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# Backend runtime data
+backend/data/store.json
+backend/data/*.tmp
+backend/uploads/*
+!backend/uploads/.gitkeep
+backend/compile_tmp/*
+!backend/compile_tmp/.gitkeep
+backend/templates/*
+!backend/templates/.gitkeep
+
+# Frontend
+frontend/node_modules/
+frontend/dist/
+
+# Local environment
+.env
+backend/.env
+frontend/.env
+logs/*.log
+logs/*.err.log
+
+# OS/editor
+.DS_Store
+Thumbs.db
+.vscode/

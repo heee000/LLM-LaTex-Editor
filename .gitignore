@@ -1,0 +1,51 @@
+# Dependencies
+node_modules/
+__pycache__/
+*.pyc
+.venv/
+
+# Build output
+frontend/dist/
+*.egg-info/
+
+# IDE
+.vscode/
+.idea/
+*.code-workspace
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Environment (contains secrets / API keys)
+backend/.env
+
+# Uploads & temp files
+backend/uploads/*
+!backend/uploads/.gitkeep
+/tmp/
+
+# Local generated files and notes
+.claude/
+data/
+projects/
+docs/superpowers/
+fill_docs.py
+apply_docs.py
+write_*.py
+doc_content_*.json
+Git与GitHub入门指南.md
+
+# Reference material (not your code)
+material/
+FORMER/
+
+# Output files
+*.pptx
+*.pdf
+!/成果展示/
+
+# Logs
+*.log

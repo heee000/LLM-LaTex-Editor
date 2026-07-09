@@ -1,0 +1,28 @@
+services:
+  backend:
+    build:
+      context: ./backend
+    ports:
+      - "8000:8000"
+    environment:
+      DATA_DIR: /app/data
+      UPLOAD_DIR: /app/uploads
+      COMPILE_DIR: /app/compile_tmp
+      TEMPLATE_DIR: /app/templates
+      FRONTEND_ORIGINS: http://localhost:5173,http://localhost:3000
+      SECRET_KEY: dev-secret-change-in-production
+    volumes:
+      - ./backend/data:/app/data
+      - ./backend/uploads:/app/uploads
+      - ./backend/compile_tmp:/app/compile_tmp
+      - ./backend/templates:/app/templates
+
+  frontend:
+    build:
+      context: ./frontend
+    ports:
+      - "5173:5173"
+    environment:
+      VITE_API_URL: http://localhost:8000/api
+    depends_on:
+      - backend
